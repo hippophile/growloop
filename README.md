@@ -183,13 +183,39 @@ Obsidian Vault/
 
 ## 🤝 Contributing
 
-PRs welcome. Built a skill worth sharing? Open a PR and add it to `skills/`.
+PRs welcome. This project grows by people sharing what works for them.
 
-Ideas in the backlog:
-- `project-context` — scans your codebase, builds per-project memory
-- `error-tracker` — logs repeated errors, suggests permanent fixes
-- `spaced-repetition` — resurfaces old lessons at 7/30/90 day intervals
-- `weekly-goals` — Sunday prompt + Friday comparison
+### How to contribute
+
+1. **Fork** the repo
+2. **Build** your skill in `skills/<your-skill-name>/SKILL.md`
+3. **Test** it — run it, make sure it works
+4. **PR** with a short description of what it does and why
+
+### Skill PR checklist
+- [ ] Follows the `skill-writer` format (frontmatter + trigger description)
+- [ ] No hardcoded personal paths — use `__MEMORY_PATH__` and `__VAULT_PATH__` placeholders
+- [ ] Tested on at least one machine
+- [ ] One clear purpose — not a Swiss army knife
+
+### Good first contributions
+- A skill for your tech stack (Rust, Go, Java, mobile, etc.)
+- A skill that improves on one of the existing ones
+- A new Obsidian template
+
+### Backlog (up for grabs)
+| Idea | Description |
+|------|-------------|
+| `project-context` | Scans codebase, builds per-project memory from code + git history |
+| `error-tracker` | Logs repeated errors, suggests permanent fixes after 3 occurrences |
+| `spaced-repetition` | Re-surfaces old lessons at 7/30/90 day intervals |
+| `weekly-goals` | Sunday prompt + Friday comparison — did you ship what you planned? |
+| `code-review-daily` | Haiku reviews what you committed today, flags patterns |
+| `windows-support` | Port the shell scripts + crons to work on Windows |
+| `mac-support` | Replace `zenity` popups with macOS native notifications |
+
+### Questions or ideas?
+Open an issue. Label it `idea` if it's a suggestion, `bug` if something broke.
 
 ---
 

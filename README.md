@@ -9,43 +9,114 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Works with Claude](https://img.shields.io/badge/Works%20with-Claude%20Code-orange)](https://claude.ai/code)
 [![Works with Cursor](https://img.shields.io/badge/Works%20with-Cursor-blue)](https://cursor.sh)
-[![Works with Copilot](https://img.shields.io/badge/Works%20with-GitHub%20Copilot-black)](https://github.com/features/copilot)
+[![Works with Copilot](https://img.shields.io/badge/Works%20with-Copilot-black)](https://github.com/features/copilot)
 [![Stars](https://img.shields.io/github/stars/Hippophile/growloop?style=social)](https://github.com/Hippophile/growloop/stargazers)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+<br/>
+
+```
+Every dev using AI starts every session from zero.
+You don't have to.
+```
 
 </div>
 
 ---
 
-## 😤 The problem
+## 😤 The problem every AI dev has
 
-Every time you open Claude, Cursor, or Copilot — it has **no idea who you are**.
+You open Claude. It asks what your stack is. Again.  
+You explain your patterns. Again.  
+You get generic answers. Again.
 
-You re-explain your stack. You re-explain your patterns. You get generic answers.  
-Other devs waste 10 minutes every session catching their AI up.
+Meanwhile your AI has processed **millions of tokens of your work** and remembers none of it.
 
-**You don't have to.**
+**growloop fixes this permanently.**
 
 ---
 
-## ✨ What growloop does
+## 🧠 How it works — 3-tier memory architecture
 
 ```
-Monday                    Every day                 Friday
-────────                  ─────────                 ──────
-📚 Learning lesson   ←    🧠 Reads your sessions    📊 Dev report
-opens in Obsidian         extracts patterns          opens in Obsidian
-                          updates your memory
-                          suggests new skills ──→ 🔔 Desktop popup
-                                                     "Create this skill?"
-                                                     [Yes] [Skip]
+┌─────────────────────────────────────────────────────────────┐
+│                     TIER 1 — CAPTURE                        │
+│  git post-commit hook fires on every commit                  │
+│  → archives decisions, file changes, messages               │
+│  → ~/.growloop/archive/YYYY-MM-DD.jsonl                     │
+└────────────────────┬────────────────────────────────────────┘
+                     │ daily at 10am
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    TIER 2 — CURATION                        │
+│  Haiku reads transcripts + archive                          │
+│  → extracts corrections, preferences, skill gaps            │
+│  → updates memory files (lean, deduplicated)                │
+│  → rebuilds SQLite FTS5 search index                        │
+│  → suggests new skills via desktop popup                    │
+└────────────────────┬────────────────────────────────────────┘
+                     │ after curation
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  TIER 3 — ACTIVE CONTEXT                    │
+│  Auto-generates ~/.claude/CLAUDE.md from memory             │
+│  → Claude loads it at the start of EVERY session            │
+│  → No manual steps. Always fresh. Always you.               │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-After one week, Claude knows:
-- Your stack, your patterns, your naming conventions
-- Where you keep getting stuck
-- What you've already tried
+---
 
-After one month, it's a **different tool**.
+## ✨ What you get
+
+### Every day at 10am — silently running
+- Reads your 15 most recent AI sessions
+- Extracts only what changes Claude's behavior (corrections, preferences, gaps)
+- Updates your personal memory files
+- Rebuilds search index
+- Regenerates `~/.claude/CLAUDE.md` — so every new session already knows you
+
+### When a repeated pattern is detected — popup on your screen
+```
+┌─────────────────────────────────────────┐
+│  New Skill: docker-local-debug          │
+│                                         │
+│  WHY: You've hit this 3 times           │
+│  this week                              │
+│                                         │
+│  WHAT IT DOES: Fix Docker permission    │
+│  errors on Linux in one command         │
+│                                         │
+│  Add extra notes: [________________]    │
+│                                         │
+│  [Skip]        [Yes, Create It]         │
+└─────────────────────────────────────────┘
+```
+Click **Yes** → skill auto-written and installed instantly.
+
+### Every Monday 10am — this week's lesson
+One focused micro-lesson based on your **actual** skill gaps.  
+Not a random tutorial. The thing *you* specifically keep struggling with.  
+Saved to Obsidian. Never repeats.
+
+### Every Friday 4pm — honest weekly review
+```markdown
+## What you built this week
+- Copilot dashboard, SQLite→MSSQL migration, OAuth/SSO config
+
+## Bug patterns
+- Port conflicts, state not propagating, API returning stale data
+
+## You're getting better at
+- Debugging JS, Docker recovery, breaking big changes safely
+
+## Still struggling with
+- Full stack visibility: backend clear, frontend state mutations opaque
+
+## One thing to focus on next week
+Fix snapshot date reactivity. Map the full data flow first.
+```
+Saved to Obsidian. Cross-linked to that week's lesson.
 
 ---
 
@@ -58,126 +129,81 @@ chmod +x install.sh
 ./install.sh
 ```
 
-One script. Asks for your Obsidian vault path. Done.
+**That's it.** One script. Asks for your Obsidian vault path. Everything else is automatic.
 
-**Requirements**
+### Requirements
+
 | Tool | Required | Install |
 |------|----------|---------|
 | [Claude Code CLI](https://claude.ai/code) | ✅ | [claude.ai/code](https://claude.ai/code) |
 | Python 3 | ✅ | pre-installed on most systems |
 | Obsidian + [Dataview plugin](https://github.com/blacksmithgu/obsidian-dataview) | ✅ | [obsidian.md](https://obsidian.md) |
-| zenity | ⚪ optional | `sudo apt install zenity` |
+| zenity (desktop popups) | ⚪ optional | `sudo apt install zenity` |
+
+> **macOS:** Replace `zenity` calls with `osascript`. Windows support coming — PRs welcome.
 
 ---
 
-## 🧠 The 4 skills
-
-### `self-improve` — your daily brain update
-Runs every day at 10am. Reads your 15 most recent AI sessions.  
-Extracts corrections, preferences, patterns. Updates your memory files.  
-If it spots a repeated workflow → **desktop popup appears**:
+## 📁 What gets installed
 
 ```
-┌─────────────────────────────────────────┐
-│  New Skill: docker-local-debug          │
-│                                         │
-│  WHY: You've hit Docker permission      │
-│  errors 3 times this week               │
-│                                         │
-│  WHAT IT DOES: Diagnose and fix common  │
-│  Docker permission issues on Linux      │
-│                                         │
-│  EXAMPLE: /docker-local-debug           │
-│                                         │
-│  Add extra notes: [________________]    │
-│                                         │
-│  [Skip]          [Yes, Create It]       │
-└─────────────────────────────────────────┘
-```
+~/.claude/
+├── CLAUDE.md                    ← auto-generated, loaded every session
+└── skills/
+    ├── self-improve/            ← daily brain update
+    ├── skill-writer/            ← write skills with best practices
+    ├── dev-report/              ← weekly honest review
+    └── learning-path/           ← weekly focused lesson
 
-Click **Yes** → skill created instantly using `skill-writer` rules.
+~/.growloop/
+├── hooks/
+│   └── post-commit              ← fires on every git commit (globally)
+├── archive/
+│   └── YYYY-MM-DD.jsonl         ← commit history, decisions
+└── scripts/
+    ├── build-index.py           ← FTS5 SQLite search index
+    └── inject-context.py        ← generates CLAUDE.md from memory
 
----
-
-### `skill-writer` — write skills that actually work
-Loads Anthropic's best practices for writing Claude Code skills.  
-Trigger conditions, progressive disclosure, autonomous patterns, checklists.  
-Use this whenever you write a new skill manually.
-
----
-
-### `dev-report` — Friday 4pm, honest weekly review
-```markdown
-# Dev Report — 2026-06-05
-
-## What you built this week
-- Copilot adoption dashboard, SQLite→MSSQL migration
-- Microsoft OAuth/SSO config, comparison cards with pie charts
-
-## Bug patterns
-- Port conflicts (5000/5001 mismatch)
-- State not propagating (snapshot → KPIs don't refresh)
-
-## You're getting better at
-- Debugging JS: console logs, curl API validation
-- Breaking big changes: reverted MSSQL when RAM-constrained
-
-## Still struggling with
-- Full stack visibility: backend clear, frontend state mutations opaque
-
-## One thing to focus on next week
-Fix snapshot date reactivity. Map the full data flow before adding features.
-```
-Saved to Obsidian. Cross-linked to that week's lesson. Builds up over time.
-
----
-
-### `learning-path` — Monday 10am, one focused lesson
-Picks ONE skill gap from your memory. Writes a micro-lesson with:
-- Why it matters **to you specifically**
-- The one concept, explained simply
-- One command to try today
-- How you'll know it worked
-
-Saves to Obsidian. Never repeats a topic you've already seen.
-
----
-
-## 📁 Obsidian structure
-
-```
-Obsidian Vault/
-└── Claude/
-    ├── Dev Reports.md        ← live Dataview index
-    ├── Learning Path.md      ← live Dataview index  
-    ├── Dev Reports/
-    │   ├── report-2026-06-05.md  ──┐
-    │   └── report-2026-05-30.md   │  cross-linked
-    └── Learning Path/             │  via [[wikilinks]]
-        ├── lesson-2026-W22.md  ───┘
-        └── lesson-2026-W21.md
+~/[your-obsidian-vault]/Claude/
+├── Dev Reports/                 ← weekly reports
+├── Learning Path/               ← weekly lessons
+├── Dev Reports.md               ← Dataview index
+└── Learning Path.md             ← Dataview index
 ```
 
 ---
 
 ## ⏰ Schedule
 
-| Time | Skill | Output |
-|------|-------|--------|
-| Daily 10am | `self-improve` | Memory updated silently |
-| Monday 10am | `learning-path` | Lesson → Obsidian + popup |
-| Friday 4pm | `dev-report` | Review → Obsidian + popup |
+| Time | What happens |
+|------|-------------|
+| Every git commit | Commit archived to `~/.growloop/archive/` |
+| Daily 10am | Memory updated, CLAUDE.md regenerated, FTS5 rebuilt |
+| Monday 10am | Learning lesson → Obsidian + desktop popup |
+| Friday 4pm | Dev report → Obsidian + desktop popup |
 
-> Machine must be on at scheduled times. Missed runs are skipped cleanly.
+> Machine must be on at scheduled times. Missed runs skip cleanly — nothing breaks.
+
+---
+
+## 🔍 Search your memory
+
+```bash
+# Search memory files
+python3 ~/.growloop/scripts/build-index.py search "docker volumes"
+
+# Search git archive
+python3 ~/.growloop/scripts/build-index.py search "auth fix"
+```
 
 ---
 
 ## 💸 Cost
 
-| Setup | Cost |
-|-------|------|
-| Claude Pro / Max | **$0** — included in your plan |
-| API key (pay-as-you-go) | ~$0.03–0.05 per daily run (Haiku model) |
+| Setup | Cost per day |
+|-------|-------------|
+| Claude Pro / Max | **$0** — included in plan |
+| API key (pay-as-you-go) | ~$0.03–0.05 (Haiku model) |
 
 ---
 
@@ -193,29 +219,25 @@ PRs welcome. This project grows by people sharing what works for them.
 4. **PR** with a short description of what it does and why
 
 ### Skill PR checklist
-- [ ] Follows the `skill-writer` format (frontmatter + trigger description)
-- [ ] No hardcoded personal paths — use `__MEMORY_PATH__` and `__VAULT_PATH__` placeholders
+- [ ] Follows `skill-writer` format (frontmatter + trigger description)
+- [ ] No hardcoded personal paths — use `__MEMORY_PATH__` and `__VAULT_PATH__`
 - [ ] Tested on at least one machine
-- [ ] One clear purpose — not a Swiss army knife
+- [ ] One clear purpose
 
-### Good first contributions
-- A skill for your tech stack (Rust, Go, Java, mobile, etc.)
-- A skill that improves on one of the existing ones
-- A new Obsidian template
+### Backlog (open issues — pick one up)
 
-### Backlog (up for grabs)
 | Idea | Description |
 |------|-------------|
 | `project-context` | Scans codebase, builds per-project memory from code + git history |
-| `error-tracker` | Logs repeated errors, suggests permanent fixes after 3 occurrences |
-| `spaced-repetition` | Re-surfaces old lessons at 7/30/90 day intervals |
-| `weekly-goals` | Sunday prompt + Friday comparison — did you ship what you planned? |
-| `code-review-daily` | Haiku reviews what you committed today, flags patterns |
-| `windows-support` | Port the shell scripts + crons to work on Windows |
-| `mac-support` | Replace `zenity` popups with macOS native notifications |
+| `error-tracker` | Logs repeated errors, suggests fix after 3 occurrences |
+| `spaced-repetition` | Re-surfaces lessons at 7/30/90 day intervals |
+| `weekly-goals` | Sunday prompt + Friday comparison |
+| `code-review-daily` | Haiku reviews today's commits, flags patterns |
+| `mac-support` | Replace `zenity` with macOS native notifications |
+| `windows-support` | Port shell scripts + crons to Windows |
 
 ### Questions or ideas?
-Open an issue. Label it `idea` if it's a suggestion, `bug` if something broke.
+Open an issue. Label it `idea` for suggestions, `bug` for problems.
 
 ---
 
@@ -227,7 +249,7 @@ MIT — use it, fork it, build on it.
 
 <div align="center">
 
-**If this helped you, star it ⭐ and share it with a dev friend.**
+**If this helped you, star it ⭐ — it helps other devs find it.**
 
 *Built by [@Hippophile](https://github.com/Hippophile)*
 

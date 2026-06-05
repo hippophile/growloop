@@ -1,32 +1,55 @@
-# growloop
+<div align="center">
 
-**Your AI remembers nothing. growloop fixes that — it learns from every session, builds your personal dev brain, and gets smarter every day.**
+# 🔁 growloop
 
-Works with Claude Code, Cursor, Copilot, or any AI agent that uses conversation history.
+### Your AI remembers nothing. growloop fixes that.
 
----
+*Learns from every session · Builds your personal dev brain · Gets smarter every day*
 
-## What it does
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Works with Claude](https://img.shields.io/badge/Works%20with-Claude%20Code-orange)](https://claude.ai/code)
+[![Works with Cursor](https://img.shields.io/badge/Works%20with-Cursor-blue)](https://cursor.sh)
+[![Works with Copilot](https://img.shields.io/badge/Works%20with-GitHub%20Copilot-black)](https://github.com/features/copilot)
+[![Stars](https://img.shields.io/github/stars/Hippophile/growloop?style=social)](https://github.com/Hippophile/growloop/stargazers)
 
-| Skill | When | What |
-|-------|------|------|
-| `self-improve` | Daily 10am (auto) | Reads your AI sessions, extracts patterns, updates your personal memory |
-| `skill-writer` | On demand | Writes new skills following Anthropic best practices |
-| `dev-report` | Every Friday 4pm (auto) | Honest weekly review → saved to Obsidian |
-| `learning-path` | Every Monday 10am (auto) | One focused lesson based on your real skill gaps → saved to Obsidian |
-
-**The loop:**
-1. You code and use AI all week
-2. growloop reads your sessions daily
-3. Builds memory: who you are, how you work, where you struggle
-4. Coaches you back: weekly report + weekly lesson
-5. Suggests new skills when it notices repeated patterns
-6. You click Yes → skill auto-created
-7. Repeat. Claude gets smarter about you every day.
+</div>
 
 ---
 
-## Install
+## 😤 The problem
+
+Every time you open Claude, Cursor, or Copilot — it has **no idea who you are**.
+
+You re-explain your stack. You re-explain your patterns. You get generic answers.  
+Other devs waste 10 minutes every session catching their AI up.
+
+**You don't have to.**
+
+---
+
+## ✨ What growloop does
+
+```
+Monday                    Every day                 Friday
+────────                  ─────────                 ──────
+📚 Learning lesson   ←    🧠 Reads your sessions    📊 Dev report
+opens in Obsidian         extracts patterns          opens in Obsidian
+                          updates your memory
+                          suggests new skills ──→ 🔔 Desktop popup
+                                                     "Create this skill?"
+                                                     [Yes] [Skip]
+```
+
+After one week, Claude knows:
+- Your stack, your patterns, your naming conventions
+- Where you keep getting stuck
+- What you've already tried
+
+After one month, it's a **different tool**.
+
+---
+
+## 🚀 Install
 
 ```bash
 git clone https://github.com/Hippophile/growloop
@@ -35,88 +58,151 @@ chmod +x install.sh
 ./install.sh
 ```
 
-You'll be asked for your Obsidian vault path. That's it.
+One script. Asks for your Obsidian vault path. Done.
 
-**Requirements:**
-- [Claude Code CLI](https://claude.ai/code)
-- Python 3
-- Obsidian (with [Dataview plugin](https://github.com/blacksmithgu/obsidian-dataview))
-- `zenity` for desktop popups: `sudo apt install zenity` (Linux) — optional
-
----
-
-## How it learns
-
-growloop reads `~/.claude/transcripts/*.jsonl` — the session files Claude Code writes locally after every conversation. It uses `claude-haiku-4-5` (cheapest model) to extract:
-
-- **Corrections** — places you said "no", "wrong", "stop"
-- **Preferences** — non-obvious style and workflow choices
-- **Skill gaps** — things you kept having to re-explain
-- **Repeated patterns** — workflows worth turning into skills
-
-All of this goes into memory files that Claude loads at the start of every session. Over time Claude stops asking basic questions about your stack and starts knowing you.
+**Requirements**
+| Tool | Required | Install |
+|------|----------|---------|
+| [Claude Code CLI](https://claude.ai/code) | ✅ | [claude.ai/code](https://claude.ai/code) |
+| Python 3 | ✅ | pre-installed on most systems |
+| Obsidian + [Dataview plugin](https://github.com/blacksmithgu/obsidian-dataview) | ✅ | [obsidian.md](https://obsidian.md) |
+| zenity | ⚪ optional | `sudo apt install zenity` |
 
 ---
 
-## Obsidian setup
+## 🧠 The 4 skills
 
-After install, your vault gets a `Claude/` folder:
+### `self-improve` — your daily brain update
+Runs every day at 10am. Reads your 15 most recent AI sessions.  
+Extracts corrections, preferences, patterns. Updates your memory files.  
+If it spots a repeated workflow → **desktop popup appears**:
+
+```
+┌─────────────────────────────────────────┐
+│  New Skill: docker-local-debug          │
+│                                         │
+│  WHY: You've hit Docker permission      │
+│  errors 3 times this week               │
+│                                         │
+│  WHAT IT DOES: Diagnose and fix common  │
+│  Docker permission issues on Linux      │
+│                                         │
+│  EXAMPLE: /docker-local-debug           │
+│                                         │
+│  Add extra notes: [________________]    │
+│                                         │
+│  [Skip]          [Yes, Create It]       │
+└─────────────────────────────────────────┘
+```
+
+Click **Yes** → skill created instantly using `skill-writer` rules.
+
+---
+
+### `skill-writer` — write skills that actually work
+Loads Anthropic's best practices for writing Claude Code skills.  
+Trigger conditions, progressive disclosure, autonomous patterns, checklists.  
+Use this whenever you write a new skill manually.
+
+---
+
+### `dev-report` — Friday 4pm, honest weekly review
+```markdown
+# Dev Report — 2026-06-05
+
+## What you built this week
+- Copilot adoption dashboard, SQLite→MSSQL migration
+- Microsoft OAuth/SSO config, comparison cards with pie charts
+
+## Bug patterns
+- Port conflicts (5000/5001 mismatch)
+- State not propagating (snapshot → KPIs don't refresh)
+
+## You're getting better at
+- Debugging JS: console logs, curl API validation
+- Breaking big changes: reverted MSSQL when RAM-constrained
+
+## Still struggling with
+- Full stack visibility: backend clear, frontend state mutations opaque
+
+## One thing to focus on next week
+Fix snapshot date reactivity. Map the full data flow before adding features.
+```
+Saved to Obsidian. Cross-linked to that week's lesson. Builds up over time.
+
+---
+
+### `learning-path` — Monday 10am, one focused lesson
+Picks ONE skill gap from your memory. Writes a micro-lesson with:
+- Why it matters **to you specifically**
+- The one concept, explained simply
+- One command to try today
+- How you'll know it worked
+
+Saves to Obsidian. Never repeats a topic you've already seen.
+
+---
+
+## 📁 Obsidian structure
 
 ```
 Obsidian Vault/
 └── Claude/
-    ├── Dev Reports.md        ← Dataview index of all reports
-    ├── Learning Path.md      ← Dataview index of all lessons
+    ├── Dev Reports.md        ← live Dataview index
+    ├── Learning Path.md      ← live Dataview index  
     ├── Dev Reports/
-    │   └── report-2026-06-05.md
-    └── Learning Path/
-        └── lesson-2026-W22.md
+    │   ├── report-2026-06-05.md  ──┐
+    │   └── report-2026-05-30.md   │  cross-linked
+    └── Learning Path/             │  via [[wikilinks]]
+        ├── lesson-2026-W22.md  ───┘
+        └── lesson-2026-W21.md
 ```
 
-Reports and lessons cross-link via `[[wikilinks]]`. Install the [Dataview plugin](https://github.com/blacksmithgu/obsidian-dataview) to get live tables in the index notes.
+---
+
+## ⏰ Schedule
+
+| Time | Skill | Output |
+|------|-------|--------|
+| Daily 10am | `self-improve` | Memory updated silently |
+| Monday 10am | `learning-path` | Lesson → Obsidian + popup |
+| Friday 4pm | `dev-report` | Review → Obsidian + popup |
+
+> Machine must be on at scheduled times. Missed runs are skipped cleanly.
 
 ---
 
-## Skills
+## 💸 Cost
 
-### `/self-improve`
-Run manually anytime, or let the daily cron handle it. Extracts patterns from your 15 most recent sessions, updates memory, suggests new skills via desktop popup.
-
-### `/skill-writer`
-Load this when writing a new skill. Gives Claude the format rules, trigger condition patterns, and checklist so every skill you write is high quality.
-
-### `/dev-report`
-Runs every Friday. Honest, specific review of what you built, your bug patterns, what you're improving at, and one thing to focus on next week.
-
-### `/learning-path`
-Runs every Monday. Picks ONE skill gap from your memory, writes a practical micro-lesson with a single command to try today.
+| Setup | Cost |
+|-------|------|
+| Claude Pro / Max | **$0** — included in your plan |
+| API key (pay-as-you-go) | ~$0.03–0.05 per daily run (Haiku model) |
 
 ---
 
-## Customizing
+## 🤝 Contributing
 
-**Change schedule:** Edit your crontab: `crontab -e`
+PRs welcome. Built a skill worth sharing? Open a PR and add it to `skills/`.
 
-**Change model:** Replace `claude-haiku-4-5` with any model in the skill files. Haiku is used by default for cost — it's $0 on Pro/Max plans.
-
-**Add your own skills:** Use `/skill-writer` to write new ones. They live in `~/.claude/skills/`.
-
-**Memory location:** Auto-detected from your working directory at install time. To change, re-run `install.sh` from your project root.
-
----
-
-## Cost
-
-**Claude Pro/Max subscription:** $0 — all usage included in your plan.
-
-**API key (pay-as-you-go):** Haiku is $1/$5 per 1M tokens. Full daily run costs ~$0.03–0.05.
+Ideas in the backlog:
+- `project-context` — scans your codebase, builds per-project memory
+- `error-tracker` — logs repeated errors, suggests permanent fixes
+- `spaced-repetition` — resurfaces old lessons at 7/30/90 day intervals
+- `weekly-goals` — Sunday prompt + Friday comparison
 
 ---
 
-## Contributing
+## 📜 License
 
-PRs welcome. If you build a great skill, open a PR and add it to `skills/`.
+MIT — use it, fork it, build on it.
 
 ---
+
+<div align="center">
+
+**If this helped you, star it ⭐ and share it with a dev friend.**
 
 *Built by [@Hippophile](https://github.com/Hippophile)*
+
+</div>

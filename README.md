@@ -198,6 +198,31 @@ python3 ~/.growloop/scripts/build-index.py search "auth fix"
 
 ---
 
+## 🆚 Why not Hermes or Memarch?
+
+Good question. Here's the honest answer:
+
+**Hermes** is a full agent framework — powerful, but heavyweight:
+- ~500MB RAM idle as a background daemon
+- Has its own skill system, memory, and scheduler that **conflict** with Claude Code
+- You'd maintain two parallel systems
+- Designed to replace your workflow, not enhance it
+
+**Memarch / vector DBs** give you semantic search — but at a cost:
+- Requires 2–4GB RAM for the vector database + embedding model
+- On an 8GB laptop already running dotnet + VS Code + Docker = **you'll throttle**
+- Same RAM pressure that killed your MSSQL experiment
+
+**growloop is designed for real machines:**
+- Runs on 8GB RAM — zero background daemon, zero vector DB
+- SQLite FTS5 search is fast enough for personal memory (hundreds, not millions of docs)
+- Haiku runs on-demand only (10am daily), not always-on
+- Everything is plain files — readable, portable, yours
+
+> If you upgrade to 16GB+ RAM or move to a VM, adding Mem0 + FAISS on top of growloop takes 10 minutes. The architecture is designed for it.
+
+---
+
 ## 💸 Cost
 
 | Setup | Cost per day |
